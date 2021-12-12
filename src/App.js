@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import HomePage from "./components/HomePage";
 import CheckIn from "./components/CheckIn";
 import Login from "./components/login/Login";
 import useToken from "./components/login/useToken";
 import DashboardNavigation from "./components/common/DashboardNavigation";
-import {Alert, Divider, Grid, Slide, Snackbar, Typography} from "@mui/material";
+import {Alert, Divider, Grid, Slide, Snackbar} from "@mui/material";
 import Schedule from "./components/Schedule";
 import Applications from "./components/Applications";
 import Admin from "./components/Admin";
@@ -13,6 +13,8 @@ import Judging from "./components/Judging";
 import Projects from "./components/Projects";
 import Prizes from "./components/Prizes";
 import Hardware from "./components/Hardware";
+import PermissionControl from "./components/common/PermissionControl";
+import DashboardFooter from "./components/common/DashboardFooter";
 
 
 function SlideTransition(props) {
@@ -26,11 +28,41 @@ function App() {
     let [notificationType, setNotificationType] = useState('success');
     let [notifyOpen, setNotifyOpen] = useState(false);
 
+    let [permissionMap, setPermissionMap] = useState({
+        applications: {enabled: false, permission: ['view']},
+        checkin: {enabled: false, permission: []},
+        schedule: {enabled: false, permission: []},
+        hardware: {enabled: false, permission: []},
+        projects: {enabled: false, permission: []},
+        prizes: {enabled: false, permission: []},
+        judging: {enabled: false, permission: []},
+        admin: {enabled: false, permission: []},
+    });
+
     function showAlert(content, type) {
         setNotification(content);
         setNotificationType(type);
         setNotifyOpen(true);
     }
+
+    useEffect(() => {
+
+        // TODO: Load permission map from API
+
+        // TODO: Use a websocket to handle enabled+permission checking
+        setPermissionMap({
+            applications: {enabled: true, permission: ['view']},
+            checkin: {enabled: true, permission: ['view']},
+            schedule: {enabled: true, permission: ['view']},
+            hardware: {enabled: true, permission: ['view']},
+            projects: {enabled: true, permission: ['view']},
+            prizes: {enabled: true, permission: ['view']},
+            judging: {enabled: true, permission: ['view']},
+            admin: {enabled: true, permission: ['view']},
+        });
+    }, [])
+
+
 
     return (
         <div className='pageContent'>
@@ -55,7 +87,7 @@ function App() {
                         <Grid container style={{backgroundColor: 'white'}}>
                             <Grid item md={2} xs={0}/>
                             <Grid item md={8} xs={12}>
-                                <DashboardNavigation showAlert={showAlert}/>
+                                <DashboardNavigation showAlert={showAlert} permissionMap={permissionMap} />
                             </Grid>
                             <Grid item md={2} xs={0}/>
                         </Grid>
@@ -68,7 +100,17 @@ function App() {
                                 <Routes>
                                     <Route path="/home" element={<HomePage showAlert={showAlert}/>}/>
                                     <Route path="/applications" element={<Applications showAlert={showAlert}/>}/>
-                                    <Route path="/checkin" element={<CheckIn showAlert={showAlert}/>}/>
+                                    <Route
+                                        path="/checkin"
+                                        element={
+                                            <PermissionControl
+                                                showAlert={showAlert}
+                                                featureEnabled={permissionMap.checkin.enabled}
+                                                permission={permissionMap.checkin.permission}
+                                                verbose={true}
+                                                component={<CheckIn/>}/>
+                                        }
+                                    />
                                     <Route path="/schedule" element={<Schedule showAlert={showAlert}/>}/>
                                     <Route path="/hardware" element={<Hardware showAlert={showAlert}/>}/>
                                     <Route path="/projects" element={<Projects showAlert={showAlert}/>}/>
@@ -83,23 +125,8 @@ function App() {
                 )}
             </BrowserRouter>
 
+            <DashboardFooter/>
 
-            <Grid container className='footer mb-3'>
-                <Grid item xs={12}> <Divider className='mt-3'/> </Grid>
-                <Grid item style={{backgroundColor: 'white'}} className='pt-3 pb-2' md={2} xs={0}/>
-                <Grid item md={8} xs={12} align='center' style={{backgroundColor: 'white'}} className='pt-3 pb-2'>
-                    <Typography variant='paragraph' component='p'>
-                        Made with ❤ by the HackUMass Tech Team. Powered by the &nbsp;
-                        <Typography variant='paragraph' component='a'
-                                    href='https://about.hackumass.com/opensource.html'>
-                            FuseUMass Platform
-                        </Typography>
-                    </Typography>
-
-
-                </Grid>
-                <Grid item style={{backgroundColor: 'white'}} className='pt-3 pb-2' md={2} xs={0}/>
-            </Grid>
         </div>
     );
 }

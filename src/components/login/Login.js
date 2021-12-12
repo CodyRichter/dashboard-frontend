@@ -79,6 +79,10 @@ export default function Login(props) {
         // TODO: Make api call to create account here.
         let success = true;
 
+        console.log(firstName);
+        console.log(lastName);
+        console.log(signupEmail);
+
 
         if (success) {
             closeSignupDialog();
@@ -115,6 +119,7 @@ export default function Login(props) {
         }
 
         props.showAlert("Password successfully reset! You may now log in with your new password.");
+        console.log(resetCode);
         closeResetPasswordDialog();
     }
 

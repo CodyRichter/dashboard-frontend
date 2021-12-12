@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Button, Divider, Grid, ListItemIcon, ListItemText, Menu, MenuItem, styled, Tab, Tabs} from "@mui/material";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 import {
     AdminPanelSettings,
@@ -15,13 +15,12 @@ import {
 } from "@mui/icons-material";
 import {Image} from "react-bootstrap";
 import {FiLogOut, FiUser} from "react-icons/all";
+import PermissionControl from "./PermissionControl";
 
-const getCurrentPage = () => window.location.pathname.split('/')[1];
-
-export default function DashboardNavigation() {
+export default function DashboardNavigation({permissionMap}) {
 
     const [menuIndex, setMenuIndexValue] = React.useState(0);
-    const [activePage, setActivePage] = React.useState(getCurrentPage());
+    let activePage = useLocation();
 
     const [accountAnchorElement, setAccountAnchorElement] = React.useState(null);
     const accountMenuOpen = Boolean(accountAnchorElement);
@@ -45,30 +44,28 @@ export default function DashboardNavigation() {
                 component={Link}
                 to={props.pathname}
                 {...props}
-                onClick={(e) => {
-                    setActivePage(props.pathname.split('/')[1]);
-                }}
             />
         );
     }
 
-
     useEffect(() => {
 
+        let i = 0;
+
         const pageNameToIndexMap = {
-            home: 0,
-            applications: 1,
-            checkin: 2,
-            schedule: 3,
-            hardware: 4,
-            projects: 5,
-            prizes: 6,
-            judging: 7,
-            admin: 8
+            home: i++,
+            applications: permissionMap.applications.enabled ? i++ : 0,
+            checkin: permissionMap.checkin.enabled ? i++ : 0,
+            schedule: permissionMap.schedule.enabled ? i++ : 0,
+            hardware: permissionMap.hardware.enabled ? i++ : 0,
+            projects: permissionMap.projects.enabled ? i++ : 0,
+            prizes: permissionMap.prizes.enabled ? i++ : 0,
+            judging: permissionMap.judging.enabled ? i++ : 0,
+            admin: permissionMap.admin.enabled ? i++ : 0
         }
 
-        setMenuIndexValue(pageNameToIndexMap[activePage]);
-    }, [activePage])
+        setMenuIndexValue(pageNameToIndexMap[activePage.pathname.split('/')[1]]);
+    }, [activePage, permissionMap])
 
     const SmallTabs = styled(Tabs)`
       height: 60px;
@@ -83,7 +80,7 @@ export default function DashboardNavigation() {
                 alignItems="center"
             >
                 <Grid item xs={6}>
-                    <Link to={'/home'} onClick={() => setActivePage('home')}>
+                    <Link to={'/home'}>
                         <Image
                             src='https://dashboard.hackumass.com/assets/navlogo-0c1253abb4aae70a32e18948d4f0f7e6038d49e25027c51567f492ae3a1887ad.png'
                             height='35em'
@@ -125,15 +122,122 @@ export default function DashboardNavigation() {
 
                 <Grid item xs={12}>
                     <SmallTabs value={menuIndex} TabIndicatorProps={{style: {height:"1px",}}} variant="scrollable" scrollButtons="auto">
-                        <LinkTab icon={<Home />} iconPosition="start" label="Home" pathname="/home" />
-                        <LinkTab icon={<NoteAdd />} iconPosition="start" label="Application" pathname="/applications" />
-                        <LinkTab icon={<Check />} iconPosition="start" label="Check In" pathname="/checkin" />
-                        <LinkTab icon={<CalendarToday />} iconPosition="start" label="Schedule" pathname="/schedule" />
-                        <LinkTab icon={<Memory />} iconPosition="start" label="Hardware" pathname="/hardware" />
-                        <LinkTab icon={<Construction />} iconPosition="start" label="Project" pathname="/projects" />
-                        <LinkTab icon={<EmojiEvents />} iconPosition="start" label="Prizes" pathname="/prizes" />
-                        <LinkTab icon={<Gavel />} iconPosition="start" label="Judging" pathname="/judging" />
-                        <LinkTab icon={<AdminPanelSettings />} iconPosition="start" label="Admin" pathname="/admin" />
+                        {/*Always enable the home component*/}
+                        <PermissionControl
+                            featureEnabled={true}
+                            permission={["view"]}
+                            verbose={false}
+                            component={
+                                <LinkTab
+                                    icon={<Home />}
+                                    iconPosition="start"
+                                    label="Home"
+                                    pathname="/home"
+                                />
+                            }
+                        />
+                        <PermissionControl
+                            featureEnabled={permissionMap.applications.enabled}
+                            permission={permissionMap.applications.permission}
+                            verbose={false}
+                            component={
+                                <LinkTab
+                                    icon={<NoteAdd />}
+                                    iconPosition="start"
+                                    label="Application"
+                                    pathname="/applications"
+                                />}
+                        />
+                        <PermissionControl
+                            featureEnabled={permissionMap.checkin.enabled}
+                            permission={permissionMap.checkin.permission}
+                            verbose={false}
+                            component={
+                                <LinkTab
+                                    icon={<Check />}
+                                    iconPosition="start"
+                                    label="Check In"
+                                    pathname="/checkin"
+                                />}
+                        />
+
+                        <PermissionControl
+                            featureEnabled={permissionMap.schedule.enabled}
+                            permission={permissionMap.schedule.permission}
+                            verbose={false}
+                            component={
+                                <LinkTab
+                                    icon={<CalendarToday />}
+                                    iconPosition="start"
+                                    label="Schedule"
+                                    pathname="/schedule"
+                                />}
+                        />
+
+                        <PermissionControl
+                            featureEnabled={permissionMap.hardware.enabled}
+                            permission={permissionMap.hardware.permission}
+                            verbose={false}
+                            component={
+                                <LinkTab
+                                    icon={<Memory />}
+                                    iconPosition="start"
+                                    label="Hardware"
+                                    pathname="/hardware"
+                                />}
+                        />
+
+                        <PermissionControl
+                            featureEnabled={permissionMap.projects.enabled}
+                            permission={permissionMap.projects.permission}
+                            verbose={false}
+                            component={
+                                <LinkTab
+                                    icon={<Construction />}
+                                    iconPosition="start"
+                                    label="Project"
+                                    pathname="/projects"
+                                />}
+                        />
+
+                        <PermissionControl
+                            featureEnabled={permissionMap.prizes.enabled}
+                            permission={permissionMap.prizes.permission}
+                            verbose={false}
+                            component={
+                                <LinkTab
+                                    icon={<EmojiEvents />}
+                                    iconPosition="start"
+                                    label="Prizes"
+                                    pathname="/prizes"
+                                />}
+                        />
+
+                        <PermissionControl
+                            featureEnabled={permissionMap.judging.enabled}
+                            permission={permissionMap.judging.permission}
+                            verbose={false}
+                            component={
+                                <LinkTab
+                                    icon={<Gavel />}
+                                    iconPosition="start"
+                                    label="Judging"
+                                    pathname="/judging"
+                                />}
+                        />
+
+                        <PermissionControl
+                            featureEnabled={permissionMap.admin.enabled}
+                            permission={permissionMap.admin.permission}
+                            verbose={false}
+                            component={
+                                <LinkTab
+                                    icon={<AdminPanelSettings />}
+                                    iconPosition="start"
+                                    label="Admin"
+                                    pathname="/admin" />}
+                        />
+
                     </SmallTabs>
                 </Grid>
 
