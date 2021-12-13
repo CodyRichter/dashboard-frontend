@@ -57,7 +57,7 @@ const theme = createTheme({
                     "fontWeight": "500",
                     "color": "#545454",
                     "textTransform": "none",
-                }
+                },
             },
         },
     },

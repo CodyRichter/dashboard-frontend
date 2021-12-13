@@ -43,6 +43,7 @@ export default function DashboardNavigation({permissionMap}) {
             <Tab
                 component={Link}
                 to={props.pathname}
+
                 {...props}
             />
         );
@@ -121,7 +122,7 @@ export default function DashboardNavigation({permissionMap}) {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <SmallTabs value={menuIndex} TabIndicatorProps={{style: {height:"1px",}}} variant="scrollable" scrollButtons="auto">
+                    <SmallTabs value={menuIndex} TabIndicatorProps={{style: {height:"3px", borderTopLeftRadius: '1em', borderTopRightRadius: '1em'}}} variant="scrollable" scrollButtons="auto">
                         {/*Always enable the home component*/}
                         <PermissionControl
                             featureEnabled={true}

@@ -5,17 +5,31 @@ export default function PermissionControl({featureEnabled, permission, showAlert
 
     const viewPermission = 'view';
 
-    if (!featureEnabled || !permission.includes(viewPermission)) {
-        if (verbose) {
-            showAlert('You do not have permission to access this page.', 'error');
-            return <Navigate to={'/home'} />;
-        } else {
-            return <></>
-        }
-    }
-
     return(
-        showAlert === undefined ? React.cloneElement(component) : React.cloneElement(component, { 'showAlert': showAlert })
+        <>
+            {featureEnabled && permission.includes(viewPermission) ?
+                <>
+                    {showAlert !== undefined ?
+                        React.cloneElement(component, { 'showAlert': showAlert })
+                    :
+                        React.cloneElement(component)
+                    }
+                </>
+            :
+             <>
+                 {verbose ?
+                     <>
+                         {showAlert('You do not have permission to access this page.', 'error')}
+                         <Navigate to={'/home'} />
+                     </>
+
+                     :
+                     <></>
+                 }
+             </>
+            }
+
+        </>
     )
 
 }

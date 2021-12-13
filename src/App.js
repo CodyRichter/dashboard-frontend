@@ -29,14 +29,14 @@ function App() {
     let [notifyOpen, setNotifyOpen] = useState(false);
 
     let [permissionMap, setPermissionMap] = useState({
-        applications: {enabled: false, permission: ['view']},
-        checkin: {enabled: false, permission: []},
-        schedule: {enabled: false, permission: []},
-        hardware: {enabled: false, permission: []},
-        projects: {enabled: false, permission: []},
-        prizes: {enabled: false, permission: []},
-        judging: {enabled: false, permission: []},
-        admin: {enabled: false, permission: []},
+        applications: {enabled: true, permission: ['view']},
+        checkin: {enabled: true, permission: ['view']},
+        schedule: {enabled: true, permission: ['view']},
+        hardware: {enabled: true, permission: ['view']},
+        projects: {enabled: true, permission: ['view']},
+        prizes: {enabled: true, permission: ['view']},
+        judging: {enabled: true, permission: ['view']},
+        admin: {enabled: true, permission: ['view']},
     });
 
     function showAlert(content, type) {
@@ -45,22 +45,23 @@ function App() {
         setNotifyOpen(true);
     }
 
-    useEffect(() => {
-
-        // TODO: Load permission map from API
-
-        // TODO: Use a websocket to handle enabled+permission checking
-        setPermissionMap({
-            applications: {enabled: true, permission: ['view']},
-            checkin: {enabled: true, permission: ['view']},
-            schedule: {enabled: true, permission: ['view']},
-            hardware: {enabled: true, permission: ['view']},
-            projects: {enabled: true, permission: ['view']},
-            prizes: {enabled: true, permission: ['view']},
-            judging: {enabled: true, permission: ['view']},
-            admin: {enabled: true, permission: ['view']},
-        });
-    }, [])
+    // useEffect(() => {
+    //
+    //     // TODO: Load permission map from API
+    //
+    //     // TODO: Use a websocket to handle enabled+permission checking
+    //     let api_call_result = {
+    //         applications: {enabled: false, permission: ['view']},
+    //         checkin: {enabled: false, permission: ['view']},
+    //         schedule: {enabled: false, permission: ['view']},
+    //         hardware: {enabled: false, permission: ['view']},
+    //         projects: {enabled: false, permission: ['view']},
+    //         prizes: {enabled: false, permission: ['view']},
+    //         judging: {enabled: false, permission: ['view']},
+    //         admin: {enabled: false, permission: ['view']},
+    //     };
+    //     setPermissionMap({...permissionMap, ...api_call_result});
+    // }, [permissionMap])
 
 
 
@@ -99,7 +100,17 @@ function App() {
                             <Grid item md={8} xs={12}>
                                 <Routes>
                                     <Route path="/home" element={<HomePage showAlert={showAlert}/>}/>
-                                    <Route path="/applications" element={<Applications showAlert={showAlert}/>}/>
+                                    <Route
+                                        path="/applications"
+                                        element={
+                                            <PermissionControl
+                                                showAlert={showAlert}
+                                                featureEnabled={permissionMap.applications.enabled}
+                                                permission={permissionMap.applications.permission}
+                                                verbose={true}
+                                                component={<Applications/>}/>
+                                        }
+                                    />
                                     <Route
                                         path="/checkin"
                                         element={
@@ -111,12 +122,72 @@ function App() {
                                                 component={<CheckIn/>}/>
                                         }
                                     />
-                                    <Route path="/schedule" element={<Schedule showAlert={showAlert}/>}/>
-                                    <Route path="/hardware" element={<Hardware showAlert={showAlert}/>}/>
-                                    <Route path="/projects" element={<Projects showAlert={showAlert}/>}/>
-                                    <Route path="/prizes" element={<Prizes showAlert={showAlert}/>}/>
-                                    <Route path="/judging" element={<Judging showAlert={showAlert}/>}/>
-                                    <Route path="/admin" element={<Admin showAlert={showAlert}/>}/>
+                                    <Route
+                                        path="/schedule"
+                                        element={
+                                            <PermissionControl
+                                                showAlert={showAlert}
+                                                featureEnabled={permissionMap.schedule.enabled}
+                                                permission={permissionMap.schedule.permission}
+                                                verbose={true}
+                                                component={<Schedule/>}/>
+                                        }
+                                    />
+                                    <Route
+                                        path="/hardware"
+                                        element={
+                                            <PermissionControl
+                                                showAlert={showAlert}
+                                                featureEnabled={permissionMap.hardware.enabled}
+                                                permission={permissionMap.hardware.permission}
+                                                verbose={true}
+                                                component={<Hardware/>}/>
+                                        }
+                                    />
+                                    <Route
+                                        path="/projects"
+                                        element={
+                                            <PermissionControl
+                                                showAlert={showAlert}
+                                                featureEnabled={permissionMap.projects.enabled}
+                                                permission={permissionMap.projects.permission}
+                                                verbose={true}
+                                                component={<Projects/>}/>
+                                        }
+                                    />
+                                    <Route
+                                        path="/prizes"
+                                        element={
+                                            <PermissionControl
+                                                showAlert={showAlert}
+                                                featureEnabled={permissionMap.prizes.enabled}
+                                                permission={permissionMap.prizes.permission}
+                                                verbose={true}
+                                                component={<Prizes/>}/>
+                                        }
+                                    />
+                                    <Route
+                                        path="/judging"
+                                        element={
+                                            <PermissionControl
+                                                showAlert={showAlert}
+                                                featureEnabled={permissionMap.judging.enabled}
+                                                permission={permissionMap.judging.permission}
+                                                verbose={true}
+                                                component={<Judging />}/>
+                                        }
+                                    />
+                                    <Route
+                                        path="/admin"
+                                        element={
+                                            <PermissionControl
+                                                showAlert={showAlert}
+                                                featureEnabled={permissionMap.admin.enabled}
+                                                permission={permissionMap.admin.permission}
+                                                verbose={true}
+                                                component={<Admin />}/>
+                                        }
+                                    />
                                 </Routes>
                             </Grid>
                             <Grid item md={2} xs={0}/>
