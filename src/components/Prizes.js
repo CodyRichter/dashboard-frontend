@@ -44,7 +44,7 @@ export default function Prizes(props) {
                                 verbose={false}
                                 component={
                                     <IconButton>
-                                        <Delete/>
+                                        <Delete />
                                     </IconButton>
                                 }
                             />
@@ -77,7 +77,7 @@ export default function Prizes(props) {
                 </CardContent>
                 {prize.selectable &&
                     <CardActions className='prizeCard' style={{borderTop: '1px solid gray'}}>
-                        <Typography variant='paragraph' component='span' color='darkred'>
+                        <Typography variant='paragraph' component='span' color='#e0820b' >
                             You must specifically apply for this prize when submitting your project.
                         </Typography>
                     </CardActions>

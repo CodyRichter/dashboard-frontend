@@ -16,16 +16,8 @@ import {Form} from "react-bootstrap";
 
 async function loginUser(credentials) {
 
-    // TODO: Handle Token authentication
+    // TODO: Make API call to obtain token
 
-    // return fetch('http://localhost:8080/login', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(credentials)
-    // })
-    //     .then(data => data.json())
     return {token: 'abc'};
 }
 
@@ -306,6 +298,10 @@ export default function Login(props) {
                 </DialogActions>
             </Dialog>
 
+            {/*Padding for footer*/}
+            <span style={{height: '5vh'}}>
+                &nbsp;
+            </span>
 
         </div>
     )

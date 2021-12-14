@@ -17,7 +17,7 @@ import {Image} from "react-bootstrap";
 import {FiLogOut, FiUser} from "react-icons/all";
 import PermissionControl from "./PermissionControl";
 
-export default function DashboardNavigation({permissionMap}) {
+export default function DashboardNavigation({permissions}) {
 
     const [menuIndex, setMenuIndexValue] = React.useState(0);
     let activePage = useLocation();
@@ -55,18 +55,18 @@ export default function DashboardNavigation({permissionMap}) {
 
         const pageNameToIndexMap = {
             home: i++,
-            applications: permissionMap.applications.enabled ? i++ : 0,
-            checkin: permissionMap.checkin.enabled ? i++ : 0,
-            schedule: permissionMap.schedule.enabled ? i++ : 0,
-            hardware: permissionMap.hardware.enabled ? i++ : 0,
-            projects: permissionMap.projects.enabled ? i++ : 0,
-            prizes: permissionMap.prizes.enabled ? i++ : 0,
-            judging: permissionMap.judging.enabled ? i++ : 0,
-            admin: permissionMap.admin.enabled ? i++ : 0
+            applications: permissions.applications.enabled ? i++ : 0,
+            checkin: permissions.checkin.enabled ? i++ : 0,
+            schedule: permissions.schedule.enabled ? i++ : 0,
+            hardware: permissions.hardware.enabled ? i++ : 0,
+            projects: permissions.projects.enabled ? i++ : 0,
+            prizes: permissions.prizes.enabled ? i++ : 0,
+            judging: permissions.judging.enabled ? i++ : 0,
+            admin: permissions.admin.enabled ? i++ : 0
         }
 
         setMenuIndexValue(pageNameToIndexMap[activePage.pathname.split('/')[1]]);
-    }, [activePage, permissionMap])
+    }, [activePage, permissions])
 
     const SmallTabs = styled(Tabs)`
       height: 60px;
@@ -139,8 +139,8 @@ export default function DashboardNavigation({permissionMap}) {
                             }
                         />
                         <PermissionControl
-                            featureEnabled={permissionMap.applications.enabled}
-                            userPermissions={permissionMap.applications.permission}
+                            featureEnabled={permissions.applications.enabled}
+                            userPermissions={permissions.applications.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -152,8 +152,8 @@ export default function DashboardNavigation({permissionMap}) {
                                 />}
                         />
                         <PermissionControl
-                            featureEnabled={permissionMap.checkin.enabled}
-                            userPermissions={permissionMap.checkin.permission}
+                            featureEnabled={permissions.checkin.enabled}
+                            userPermissions={permissions.checkin.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -166,8 +166,8 @@ export default function DashboardNavigation({permissionMap}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissionMap.schedule.enabled}
-                            userPermissions={permissionMap.schedule.permission}
+                            featureEnabled={permissions.schedule.enabled}
+                            userPermissions={permissions.schedule.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -180,8 +180,8 @@ export default function DashboardNavigation({permissionMap}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissionMap.hardware.enabled}
-                            userPermissions={permissionMap.hardware.permission}
+                            featureEnabled={permissions.hardware.enabled}
+                            userPermissions={permissions.hardware.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -194,8 +194,8 @@ export default function DashboardNavigation({permissionMap}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissionMap.projects.enabled}
-                            userPermissions={permissionMap.projects.permission}
+                            featureEnabled={permissions.projects.enabled}
+                            userPermissions={permissions.projects.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -208,8 +208,8 @@ export default function DashboardNavigation({permissionMap}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissionMap.prizes.enabled}
-                            userPermissions={permissionMap.prizes.permission}
+                            featureEnabled={permissions.prizes.enabled}
+                            userPermissions={permissions.prizes.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -222,8 +222,8 @@ export default function DashboardNavigation({permissionMap}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissionMap.judging.enabled}
-                            userPermissions={permissionMap.judging.permission}
+                            featureEnabled={permissions.judging.enabled}
+                            userPermissions={permissions.judging.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -236,8 +236,8 @@ export default function DashboardNavigation({permissionMap}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissionMap.admin.enabled}
-                            userPermissions={permissionMap.admin.permission}
+                            featureEnabled={permissions.admin.enabled}
+                            userPermissions={permissions.admin.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={

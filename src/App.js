@@ -28,29 +28,14 @@ function App() {
     let [notificationType, setNotificationType] = useState('success');
     let [notifyOpen, setNotifyOpen] = useState(false);
 
-    let [permissionMap, setPermissionMap] = useState({
-        applications: {enabled: true, permission: ['view']},
-        checkin: {enabled: true, permission: ['view']},
-        schedule: {enabled: true, permission: ['view']},
-        hardware: {enabled: true, permission: ['view']},
-        projects: {enabled: true, permission: ['view']},
-        prizes: {enabled: true, permission: ['view', 'edit', 'delete', 'create']},
-        judging: {enabled: true, permission: ['view']},
-        admin: {enabled: true, permission: ['view']},
-    });
-
-    function showAlert(content, type) {
-        setNotification(content);
-        setNotificationType(type);
-        setNotifyOpen(true);
-    }
-
-    useEffect(() => {
-
-    //     // TODO: Load permission map from API
-    //
-    //     // TODO: Use a websocket to handle enabled+permission checking
-        let api_call_result = {
+    let [userData, setUserData] = useState({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@email.com',
+        role: 'participant',
+        roleData: {status: 'new'},
+        integrations: {}, // Slack ID, Discord ID, etc...
+        permissions: {
             applications: {enabled: true, permission: ['view']},
             checkin: {enabled: true, permission: ['view']},
             schedule: {enabled: true, permission: ['view']},
@@ -59,10 +44,69 @@ function App() {
             prizes: {enabled: true, permission: ['view', 'edit', 'delete', 'create']},
             judging: {enabled: true, permission: ['view']},
             admin: {enabled: true, permission: ['view']},
+        }
+    });
+
+    function showAlert(content, type) {
+        setNotification(content);
+        setNotificationType(type);
+        setNotifyOpen(true);
+    }
+
+
+    useEffect(() => {
+        
+        const loggedInUser = {
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'test@email.com',
+            role: 'participant',
+            roleData: {status: 'new'},
+            integrations: {}, // Slack ID, Discord ID, etc...
+            permissions: {
+                applications: {enabled: false, permission: ['view']},
+                checkin: {enabled: true, permission: ['view']},
+                schedule: {enabled: true, permission: ['view']},
+                hardware: {enabled: true, permission: ['view']},
+                projects: {enabled: true, permission: ['view']},
+                prizes: {enabled: true, permission: ['view', 'edit', 'delete', 'create']},
+                judging: {enabled: true, permission: ['view']},
+                admin: {enabled: true, permission: ['view']},
+            }
         };
-        // setPermissionMap( {...permissionMap, ...api_call_result});
-        setPermissionMap(_ => api_call_result);
-    }, [])
+
+        const noUser = {
+            firstName: '',
+            lastName: '',
+            email: '',
+            role: '',
+            roleData: {},
+            integrations: {}, // Slack ID, Discord ID, etc...
+            permissions: {
+                applications: {enabled: false, permission: ['']},
+                checkin: {enabled: false, permission: ['']},
+                schedule: {enabled: false, permission: ['']},
+                hardware: {enabled: false, permission: ['']},
+                projects: {enabled: false, permission: ['']},
+                prizes: {enabled: false, permission: ['']},
+                judging: {enabled: false, permission: ['']},
+                admin: {enabled: false, permission: ['']},
+            }
+        };
+        
+        // Do not allow a non-logged-in user to access anything
+        if (token === undefined) {
+            setUserData(noUser);
+        } else {
+            // TODO: Load permission map from API and Use a websocket to handle enabled+permission checking
+
+
+            // setuserData.permissions( {...userData.permissions, ...api_call_result});
+            setUserData(_ => loggedInUser);
+        }
+
+
+    }, [token])
 
 
 
@@ -89,7 +133,7 @@ function App() {
                         <Grid container style={{backgroundColor: 'white'}}>
                             <Grid item md={2} xs={0}/>
                             <Grid item md={8} xs={12}>
-                                <DashboardNavigation showAlert={showAlert} permissionMap={permissionMap} />
+                                <DashboardNavigation showAlert={showAlert} permissions={userData.permissions} />
                             </Grid>
                             <Grid item md={2} xs={0}/>
                         </Grid>
@@ -100,14 +144,18 @@ function App() {
                             <Grid item md={2} xs={0}/>
                             <Grid item md={8} xs={12}>
                                 <Routes>
-                                    <Route path="/home" element={<HomePage showAlert={showAlert}/>}/>
+                                    <Route
+                                        path="/home"
+                                        element={<HomePage showAlert={showAlert} userPermissions={userData.permissions.applications.permission} userData={userData}/>}
+                                    />
                                     <Route
                                         path="/applications"
                                         element={
                                             <PermissionControl
                                                 showAlert={showAlert}
-                                                featureEnabled={permissionMap.applications.enabled}
-                                                userPermissions={permissionMap.applications.permission}
+                                                featureEnabled={userData.permissions.applications.enabled}
+                                                userPermissions={userData.permissions.applications.permission}
+                                                userData={userData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Applications/>}/>
@@ -118,8 +166,9 @@ function App() {
                                         element={
                                             <PermissionControl
                                                 showAlert={showAlert}
-                                                featureEnabled={permissionMap.checkin.enabled}
-                                                userPermissions={permissionMap.checkin.permission}
+                                                featureEnabled={userData.permissions.checkin.enabled}
+                                                userPermissions={userData.permissions.checkin.permission}
+                                                userData={userData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<CheckIn/>}/>
@@ -130,8 +179,9 @@ function App() {
                                         element={
                                             <PermissionControl
                                                 showAlert={showAlert}
-                                                featureEnabled={permissionMap.schedule.enabled}
-                                                userPermissions={permissionMap.schedule.permission}
+                                                featureEnabled={userData.permissions.schedule.enabled}
+                                                userPermissions={userData.permissions.schedule.permission}
+                                                userData={userData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Schedule/>}/>
@@ -142,8 +192,9 @@ function App() {
                                         element={
                                             <PermissionControl
                                                 showAlert={showAlert}
-                                                featureEnabled={permissionMap.hardware.enabled}
-                                                userPermissions={permissionMap.hardware.permission}
+                                                featureEnabled={userData.permissions.hardware.enabled}
+                                                userPermissions={userData.permissions.hardware.permission}
+                                                userData={userData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Hardware/>}/>
@@ -154,8 +205,9 @@ function App() {
                                         element={
                                             <PermissionControl
                                                 showAlert={showAlert}
-                                                featureEnabled={permissionMap.projects.enabled}
-                                                userPermissions={permissionMap.projects.permission}
+                                                featureEnabled={userData.permissions.projects.enabled}
+                                                userPermissions={userData.permissions.projects.permission}
+                                                userData={userData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Projects/>}/>
@@ -166,8 +218,9 @@ function App() {
                                         element={
                                             <PermissionControl
                                                 showAlert={showAlert}
-                                                featureEnabled={permissionMap.prizes.enabled}
-                                                userPermissions={permissionMap.prizes.permission}
+                                                featureEnabled={userData.permissions.prizes.enabled}
+                                                userPermissions={userData.permissions.prizes.permission}
+                                                userData={userData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Prizes/>}/>
@@ -178,8 +231,9 @@ function App() {
                                         element={
                                             <PermissionControl
                                                 showAlert={showAlert}
-                                                featureEnabled={permissionMap.judging.enabled}
-                                                userPermissions={permissionMap.judging.permission}
+                                                featureEnabled={userData.permissions.judging.enabled}
+                                                userPermissions={userData.permissions.judging.permission}
+                                                userData={userData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Judging />}/>
@@ -190,8 +244,9 @@ function App() {
                                         element={
                                             <PermissionControl
                                                 showAlert={showAlert}
-                                                featureEnabled={permissionMap.admin.enabled}
-                                                userPermissions={permissionMap.admin.permission}
+                                                featureEnabled={userData.permissions.admin.enabled}
+                                                userPermissions={userData.permissions.admin.permission}
+                                                userData={userData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Admin />}/>

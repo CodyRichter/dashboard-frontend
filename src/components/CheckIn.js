@@ -95,7 +95,7 @@ export default function CheckIn() {
                                 </div>
 
                                 <div style={{width: '100%'}} className='mt-2' align='center'>
-                                    <Button disableElevation variant='contained' type='submit' color='secondary' style={{width: '50%'}}>
+                                    <Button disableElevation variant='contained' type='submit' color='warning' style={{width: '50%'}}>
                                         Force Check In
                                     </Button>
                                 </div>

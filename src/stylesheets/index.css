@@ -42,3 +42,11 @@ code {
 .prizeCard {
   background-color: #f5f7fb;
 }
+
+.primaryCard {
+  border-top: 0.35em solid #467fcf;
+}
+
+.errorCard {
+  border-top: 0.35em solid #7e0c1c;
+}

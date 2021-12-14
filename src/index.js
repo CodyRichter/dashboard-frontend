@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './stylesheets/index.css';
 import App from './App';
 import {createTheme, ThemeProvider} from "@mui/material";
-import {amber, deepPurple} from "@mui/material/colors";
 
 const theme = createTheme({
     components: {
@@ -66,9 +65,21 @@ const theme = createTheme({
             main: '#467fcf',
         },
         secondary: {
-            main: amber[500],
-            contrastText: deepPurple[900],
+            main: '#0B2027',
+            contrastText: "#545454",
         },
+        error: {
+            main: '#7e0c1c'
+        },
+        warning: {
+            main: '#e0820b'
+        },
+        success: {
+            main: '#6E9075'
+        },
+        info: {
+            main: '#D9DBF1'
+        }
     },
 });
 
