@@ -21,7 +21,7 @@ export default function Prizes(props) {
 
     const PrizeCard = ({prize, userPermissions}) => {
         return (
-            <Card raised>
+            <Card raised className={prize.priority ? 'primaryCard' : 'secondaryCard'}>
                 <CardHeader
                     title={prize.title} className='prizeCard' subheader={'Sponsored by ' + prize.sponsor}
                     action={
@@ -44,7 +44,7 @@ export default function Prizes(props) {
                                 verbose={false}
                                 component={
                                     <IconButton>
-                                        <Delete />
+                                        <Delete/>
                                     </IconButton>
                                 }
                             />
@@ -77,7 +77,7 @@ export default function Prizes(props) {
                 </CardContent>
                 {prize.selectable &&
                     <CardActions className='prizeCard' style={{borderTop: '1px solid gray'}}>
-                        <Typography variant='paragraph' component='span' color='error' >
+                        <Typography variant='paragraph' component='span' color='error'>
                             You must specifically apply for this prize when submitting your project.
                         </Typography>
                     </CardActions>
@@ -286,6 +286,7 @@ export default function Prizes(props) {
 
                 }
 
+                {/* Display priority prizes first*/}
                 {prizes.length > 0 && prizes[0].priority &&
                     <Grid item xs={12} className='mb-4'>
                         <Card>
@@ -314,30 +315,25 @@ export default function Prizes(props) {
                     </Grid>
                 }
 
+                {/* All non-priority prizes */}
                 {prizes.length > 0 &&
                     <Grid item xs={12} className='mb-4'>
-                        <Card>
-                            <CardContent>
-
-                                <Grid
-                                    container
-                                    direction="row"
-                                    justifyContent="flex-start"
-                                    alignItems="flex-start"
-                                    spacing={3}
-                                >
-                                    {prizes.map((pr, i) => {
-                                        return (
-                                            !pr.priority &&
-                                            <Grid item xs={12} md={6} xl={4} key={'featured' + i}>
-                                                <PrizeCard prize={pr} userPermissions={props.userPermissions}/>
-                                            </Grid>
-                                        )
-                                    })}
-                                </Grid>
-                            </CardContent>
-                        </Card>
-
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="flex-start"
+                            alignItems="flex-start"
+                            spacing={3}
+                        >
+                            {prizes.map((pr, i) => {
+                                return (
+                                    !pr.priority &&
+                                    <Grid item xs={12} md={6} xl={4} key={'featured' + i}>
+                                        <PrizeCard prize={pr} userPermissions={props.userPermissions}/>
+                                    </Grid>
+                                )
+                            })}
+                        </Grid>
                     </Grid>
 
                 }
@@ -350,21 +346,24 @@ export default function Prizes(props) {
                 <Form onSubmit={submitForm}>
                     <DialogContent>
 
-                        <input type="text" hidden disabled id='prizeId' required defaultValue={selectedPrize.id} />
+                        <input type="text" hidden disabled id='prizeId' required defaultValue={selectedPrize.id}/>
 
                         <Form.Group className='mb-3'>
                             <Form.Label className='loginInputLabel'>Prize Title</Form.Label>
-                            <Form.Control type="text" placeholder="Best Hardware Hack..." id='title' required defaultValue={selectedPrize.title} />
+                            <Form.Control type="text" placeholder="Best Hardware Hack..." id='title' required
+                                          defaultValue={selectedPrize.title}/>
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
                             <Form.Label className='loginInputLabel'>Reward</Form.Label>
-                            <Form.Control type="text" placeholder="Arduino Uno..." id='reward' required defaultValue={selectedPrize.reward} />
+                            <Form.Control type="text" placeholder="Arduino Uno..." id='reward' required
+                                          defaultValue={selectedPrize.reward}/>
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
                             <Form.Label className='loginInputLabel'>Reward Link</Form.Label>
-                            <Form.Control type="url" placeholder="https://amazon.com/" id='rewardLink' defaultValue={selectedPrize.rewardLink} />
+                            <Form.Control type="url" placeholder="https://amazon.com/" id='rewardLink'
+                                          defaultValue={selectedPrize.rewardLink}/>
                             <Form.Text className="text-muted">
                                 Optional link to the reward product, such as its Amazon page
                             </Form.Text>
@@ -372,7 +371,9 @@ export default function Prizes(props) {
 
                         <Form.Group className='mb-3'>
                             <Form.Label className='loginInputLabel'>Description</Form.Label>
-                            <Form.Control type="text" as="textarea" placeholder="Create the best hack with hardware components..." id='description' required defaultValue={selectedPrize.description} />
+                            <Form.Control type="text" as="textarea"
+                                          placeholder="Create the best hack with hardware components..."
+                                          id='description' required defaultValue={selectedPrize.description}/>
                             <Form.Text className="text-muted">
                                 Optional link to the reward product, such as its Amazon page
                             </Form.Text>
@@ -380,22 +381,28 @@ export default function Prizes(props) {
 
                         <Form.Group className='mb-3'>
                             <Form.Label className='loginInputLabel'>Sponsor</Form.Label>
-                            <Form.Control type="text" placeholder="RedPandaHacks..." id='sponsor' required defaultValue={selectedPrize.title} />
+                            <Form.Control type="text" placeholder="RedPandaHacks..." id='sponsor' required
+                                          defaultValue={selectedPrize.title}/>
                             <Form.Text className="text-muted">
-                                If this prize is provided by the hackathon itself write the hackathon name, otherwise put the name of the company that provided it
+                                If this prize is provided by the hackathon itself write the hackathon name, otherwise
+                                put the name of the company that provided it
                             </Form.Text>
                         </Form.Group>
 
 
                         <Form.Group className='mb-3'>
-                            <FormControlLabel control={<Switch id='selectable' defaultChecked={selectedPrize.selectable} />} label="Participant Selectable" /> <br />
+                            <FormControlLabel
+                                control={<Switch id='selectable' defaultChecked={selectedPrize.selectable}/>}
+                                label="Participant Selectable"/> <br/>
                             <Form.Text className="text-muted">
-                                If a prize is selectable, a user must specifically apply for it when submitting their project.
+                                If a prize is selectable, a user must specifically apply for it when submitting their
+                                project.
                             </Form.Text>
                         </Form.Group>
 
                         <Form.Group className='mb-3'>
-                            <FormControlLabel control={<Switch id='priority' defaultChecked={selectedPrize.priority} />} label="High Priority" /> <br />
+                            <FormControlLabel control={<Switch id='priority' defaultChecked={selectedPrize.priority}/>}
+                                              label="High Priority"/> <br/>
                             <Form.Text className="text-muted">
                                 High priority prizes are featured at the top of the page
                             </Form.Text>
@@ -412,7 +419,8 @@ export default function Prizes(props) {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={closeEditor} disableElevation>Cancel</Button>
-                        <Button type='submit' variant='contained' disableElevation> {editorMode === 'create' ? 'Create Prize' : 'Update Prize'}</Button>
+                        <Button type='submit' variant='contained'
+                                disableElevation> {editorMode === 'create' ? 'Create Prize' : 'Update Prize'}</Button>
                     </DialogActions>
                 </Form>
             </Dialog>
