@@ -34,7 +34,7 @@ function App() {
         schedule: {enabled: true, permission: ['view']},
         hardware: {enabled: true, permission: ['view']},
         projects: {enabled: true, permission: ['view']},
-        prizes: {enabled: true, permission: ['view']},
+        prizes: {enabled: true, permission: ['view', 'edit', 'delete', 'create']},
         judging: {enabled: true, permission: ['view']},
         admin: {enabled: true, permission: ['view']},
     });
@@ -45,23 +45,24 @@ function App() {
         setNotifyOpen(true);
     }
 
-    // useEffect(() => {
-    //
+    useEffect(() => {
+
     //     // TODO: Load permission map from API
     //
     //     // TODO: Use a websocket to handle enabled+permission checking
-    //     let api_call_result = {
-    //         applications: {enabled: false, permission: ['view']},
-    //         checkin: {enabled: false, permission: ['view']},
-    //         schedule: {enabled: false, permission: ['view']},
-    //         hardware: {enabled: false, permission: ['view']},
-    //         projects: {enabled: false, permission: ['view']},
-    //         prizes: {enabled: false, permission: ['view']},
-    //         judging: {enabled: false, permission: ['view']},
-    //         admin: {enabled: false, permission: ['view']},
-    //     };
-    //     setPermissionMap({...permissionMap, ...api_call_result});
-    // }, [permissionMap])
+        let api_call_result = {
+            applications: {enabled: true, permission: ['view']},
+            checkin: {enabled: true, permission: ['view']},
+            schedule: {enabled: true, permission: ['view']},
+            hardware: {enabled: true, permission: ['view']},
+            projects: {enabled: true, permission: ['view']},
+            prizes: {enabled: true, permission: ['view', 'edit', 'delete', 'create']},
+            judging: {enabled: true, permission: ['view']},
+            admin: {enabled: true, permission: ['view']},
+        };
+        // setPermissionMap( {...permissionMap, ...api_call_result});
+        setPermissionMap(_ => api_call_result);
+    }, [])
 
 
 
@@ -106,7 +107,8 @@ function App() {
                                             <PermissionControl
                                                 showAlert={showAlert}
                                                 featureEnabled={permissionMap.applications.enabled}
-                                                permission={permissionMap.applications.permission}
+                                                userPermissions={permissionMap.applications.permission}
+                                                requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Applications/>}/>
                                         }
@@ -117,7 +119,8 @@ function App() {
                                             <PermissionControl
                                                 showAlert={showAlert}
                                                 featureEnabled={permissionMap.checkin.enabled}
-                                                permission={permissionMap.checkin.permission}
+                                                userPermissions={permissionMap.checkin.permission}
+                                                requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<CheckIn/>}/>
                                         }
@@ -128,7 +131,8 @@ function App() {
                                             <PermissionControl
                                                 showAlert={showAlert}
                                                 featureEnabled={permissionMap.schedule.enabled}
-                                                permission={permissionMap.schedule.permission}
+                                                userPermissions={permissionMap.schedule.permission}
+                                                requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Schedule/>}/>
                                         }
@@ -139,7 +143,8 @@ function App() {
                                             <PermissionControl
                                                 showAlert={showAlert}
                                                 featureEnabled={permissionMap.hardware.enabled}
-                                                permission={permissionMap.hardware.permission}
+                                                userPermissions={permissionMap.hardware.permission}
+                                                requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Hardware/>}/>
                                         }
@@ -150,7 +155,8 @@ function App() {
                                             <PermissionControl
                                                 showAlert={showAlert}
                                                 featureEnabled={permissionMap.projects.enabled}
-                                                permission={permissionMap.projects.permission}
+                                                userPermissions={permissionMap.projects.permission}
+                                                requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Projects/>}/>
                                         }
@@ -161,7 +167,8 @@ function App() {
                                             <PermissionControl
                                                 showAlert={showAlert}
                                                 featureEnabled={permissionMap.prizes.enabled}
-                                                permission={permissionMap.prizes.permission}
+                                                userPermissions={permissionMap.prizes.permission}
+                                                requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Prizes/>}/>
                                         }
@@ -172,7 +179,8 @@ function App() {
                                             <PermissionControl
                                                 showAlert={showAlert}
                                                 featureEnabled={permissionMap.judging.enabled}
-                                                permission={permissionMap.judging.permission}
+                                                userPermissions={permissionMap.judging.permission}
+                                                requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Judging />}/>
                                         }
@@ -183,7 +191,8 @@ function App() {
                                             <PermissionControl
                                                 showAlert={showAlert}
                                                 featureEnabled={permissionMap.admin.enabled}
-                                                permission={permissionMap.admin.permission}
+                                                userPermissions={permissionMap.admin.permission}
+                                                requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Admin />}/>
                                         }

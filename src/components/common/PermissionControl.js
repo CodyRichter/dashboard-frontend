@@ -1,16 +1,16 @@
 import React from 'react';
 import {Navigate} from "react-router-dom";
 
-export default function PermissionControl({featureEnabled, permission, showAlert, verbose, component}) {
+export default function PermissionControl({featureEnabled, userPermissions, requiredPermissions, showAlert, verbose, component}) {
 
-    const viewPermission = 'view';
+    let permissionCheck = (arr, target) => target.every(v => arr.includes(v));
 
     return(
         <>
-            {featureEnabled && permission.includes(viewPermission) ?
+            {featureEnabled && permissionCheck(userPermissions, requiredPermissions) ?
                 <>
                     {showAlert !== undefined ?
-                        React.cloneElement(component, { 'showAlert': showAlert })
+                        React.cloneElement(component, { 'showAlert': showAlert, 'userPermissions': userPermissions })
                     :
                         React.cloneElement(component)
                     }
