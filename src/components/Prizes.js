@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
     Alert, AlertTitle,
     Button,
-    Card,
+    Card, CardActions,
     CardContent,
     CardHeader, Dialog, DialogActions,
     DialogContent,
@@ -75,6 +75,13 @@ export default function Prizes(props) {
                     </Typography>
 
                 </CardContent>
+                {prize.selectable &&
+                    <CardActions className='prizeCard' style={{borderTop: '1px solid gray'}}>
+                        <Typography variant='paragraph' component='span' color='darkred'>
+                            You must specifically apply for this prize when submitting your project.
+                        </Typography>
+                    </CardActions>
+                }
 
             </Card>
         )
@@ -149,7 +156,7 @@ export default function Prizes(props) {
                 id: 0,
                 title: 'Best X Hack',
                 priority: true,
-                selectable: true,
+                selectable: false,
                 sponsor: 'HackUMass',
                 description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
                 reward: 'Macbook X 2022',
@@ -159,7 +166,7 @@ export default function Prizes(props) {
                 id: 1,
                 title: 'Best Y Hack',
                 priority: true,
-                selectable: true,
+                selectable: false,
                 sponsor: 'HackUMass',
                 description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip",
                 reward: 'iPod Pro Max Plus',
@@ -179,7 +186,7 @@ export default function Prizes(props) {
                 id: 3,
                 title: 'Best b Hack',
                 priority: false,
-                selectable: true,
+                selectable: false,
                 sponsor: 'HackUMass',
                 description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
                 reward: 'Hacker Keyboard',
@@ -209,7 +216,7 @@ export default function Prizes(props) {
                 id: 6,
                 title: 'Best e Hack',
                 priority: false,
-                selectable: true,
+                selectable: false,
                 sponsor: 'HackUMass',
                 description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
                 reward: 'Hacker Keyboard',
