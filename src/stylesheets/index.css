@@ -47,6 +47,18 @@ code {
   border-top: 0.35em solid #467fcf;
 }
 
+.secondaryCard {
+  border-top: 0.35em solid #0B2027;
+}
+
+.warningCard {
+  border-top: 0.35em solid #e0820b;
+}
+
+.successCard {
+  border-top: 0.35em solid #069126;
+}
+
 .errorCard {
   border-top: 0.35em solid #7e0c1c;
 }

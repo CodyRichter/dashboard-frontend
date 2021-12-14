@@ -32,7 +32,7 @@ function App() {
         firstName: 'John',
         lastName: 'Doe',
         email: 'test@email.com',
-        role: 'participant',
+        role: 'new',
         roleData: {status: 'new'},
         integrations: {}, // Slack ID, Discord ID, etc...
         permissions: {
@@ -46,6 +46,28 @@ function App() {
             admin: {enabled: true, permission: ['view']},
         }
     });
+
+    let [eventData, setEventData] = useState({
+        details: {
+            hackathon_name: 'Red Panda Hacks',
+            hackathon_version: 'X'
+        },
+        logistics: {
+            building: 'Integrative Learning Center',
+            address: '650 N Pleasant St',
+            city: 'Amherst',
+            state: 'Massachusetts',
+            zip: '01003',
+            startDate: '02/15/2022',
+            endDate: '02/17/2022',
+            startTime: '18:00:00',
+            endTime: '12:00:00'
+        },
+        travel: {
+            relocationProvided: true,
+            relocationDetails: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+        }
+    })
 
     function showAlert(content, type) {
         setNotification(content);
@@ -61,10 +83,10 @@ function App() {
             lastName: 'Doe',
             email: 'test@email.com',
             role: 'participant',
-            roleData: {status: 'new'},
+            roleData: {status: 'complete'},
             integrations: {}, // Slack ID, Discord ID, etc...
             permissions: {
-                applications: {enabled: false, permission: ['view']},
+                applications: {enabled: true, permission: ['view']},
                 checkin: {enabled: true, permission: ['view']},
                 schedule: {enabled: true, permission: ['view']},
                 hardware: {enabled: true, permission: ['view']},
@@ -133,7 +155,7 @@ function App() {
                         <Grid container style={{backgroundColor: 'white'}}>
                             <Grid item md={2} xs={0}/>
                             <Grid item md={8} xs={12}>
-                                <DashboardNavigation showAlert={showAlert} permissions={userData.permissions} />
+                                <DashboardNavigation showAlert={showAlert} userData={userData} eventData={eventData} />
                             </Grid>
                             <Grid item md={2} xs={0}/>
                         </Grid>
@@ -146,7 +168,7 @@ function App() {
                                 <Routes>
                                     <Route
                                         path="/home"
-                                        element={<HomePage showAlert={showAlert} userPermissions={userData.permissions.applications.permission} userData={userData}/>}
+                                        element={<HomePage showAlert={showAlert} userPermissions={userData.permissions.applications.permission} userData={userData} eventData={eventData}/>}
                                     />
                                     <Route
                                         path="/applications"
@@ -156,6 +178,7 @@ function App() {
                                                 featureEnabled={userData.permissions.applications.enabled}
                                                 userPermissions={userData.permissions.applications.permission}
                                                 userData={userData}
+                                                eventData={eventData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Applications/>}/>
@@ -169,6 +192,7 @@ function App() {
                                                 featureEnabled={userData.permissions.checkin.enabled}
                                                 userPermissions={userData.permissions.checkin.permission}
                                                 userData={userData}
+                                                eventData={eventData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<CheckIn/>}/>
@@ -182,6 +206,7 @@ function App() {
                                                 featureEnabled={userData.permissions.schedule.enabled}
                                                 userPermissions={userData.permissions.schedule.permission}
                                                 userData={userData}
+                                                eventData={eventData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Schedule/>}/>
@@ -195,6 +220,7 @@ function App() {
                                                 featureEnabled={userData.permissions.hardware.enabled}
                                                 userPermissions={userData.permissions.hardware.permission}
                                                 userData={userData}
+                                                eventData={eventData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Hardware/>}/>
@@ -208,6 +234,7 @@ function App() {
                                                 featureEnabled={userData.permissions.projects.enabled}
                                                 userPermissions={userData.permissions.projects.permission}
                                                 userData={userData}
+                                                eventData={eventData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Projects/>}/>
@@ -221,6 +248,7 @@ function App() {
                                                 featureEnabled={userData.permissions.prizes.enabled}
                                                 userPermissions={userData.permissions.prizes.permission}
                                                 userData={userData}
+                                                eventData={eventData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Prizes/>}/>
@@ -234,6 +262,7 @@ function App() {
                                                 featureEnabled={userData.permissions.judging.enabled}
                                                 userPermissions={userData.permissions.judging.permission}
                                                 userData={userData}
+                                                eventData={eventData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Judging />}/>
@@ -247,6 +276,7 @@ function App() {
                                                 featureEnabled={userData.permissions.admin.enabled}
                                                 userPermissions={userData.permissions.admin.permission}
                                                 userData={userData}
+                                                eventData={eventData}
                                                 requiredPermissions={['view']}
                                                 verbose={true}
                                                 component={<Admin />}/>

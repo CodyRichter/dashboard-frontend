@@ -1,5 +1,17 @@
 import React, {useEffect} from 'react';
-import {Button, Divider, Grid, ListItemIcon, ListItemText, Menu, MenuItem, styled, Tab, Tabs} from "@mui/material";
+import {
+    Button,
+    Divider,
+    Grid,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+    styled,
+    Tab,
+    Tabs,
+    Typography
+} from "@mui/material";
 import {Link, useLocation} from "react-router-dom";
 
 import {
@@ -16,8 +28,9 @@ import {
 import {Image} from "react-bootstrap";
 import {FiLogOut, FiUser} from "react-icons/all";
 import PermissionControl from "./PermissionControl";
+import titleize from "titleize";
 
-export default function DashboardNavigation({permissions}) {
+export default function DashboardNavigation(props) {
 
     const [menuIndex, setMenuIndexValue] = React.useState(0);
     let activePage = useLocation();
@@ -55,18 +68,18 @@ export default function DashboardNavigation({permissions}) {
 
         const pageNameToIndexMap = {
             home: i++,
-            applications: permissions.applications.enabled ? i++ : 0,
-            checkin: permissions.checkin.enabled ? i++ : 0,
-            schedule: permissions.schedule.enabled ? i++ : 0,
-            hardware: permissions.hardware.enabled ? i++ : 0,
-            projects: permissions.projects.enabled ? i++ : 0,
-            prizes: permissions.prizes.enabled ? i++ : 0,
-            judging: permissions.judging.enabled ? i++ : 0,
-            admin: permissions.admin.enabled ? i++ : 0
+            applications: props.userData.permissions.applications.enabled ? i++ : 0,
+            checkin: props.userData.permissions.checkin.enabled ? i++ : 0,
+            schedule: props.userData.permissions.schedule.enabled ? i++ : 0,
+            hardware: props.userData.permissions.hardware.enabled ? i++ : 0,
+            projects: props.userData.permissions.projects.enabled ? i++ : 0,
+            prizes: props.userData.permissions.prizes.enabled ? i++ : 0,
+            judging: props.userData.permissions.judging.enabled ? i++ : 0,
+            admin: props.userData.permissions.admin.enabled ? i++ : 0
         }
 
         setMenuIndexValue(pageNameToIndexMap[activePage.pathname.split('/')[1]]);
-    }, [activePage, permissions])
+    }, [activePage, props.userData.permissions])
 
     const SmallTabs = styled(Tabs)`
       height: 60px;
@@ -92,7 +105,14 @@ export default function DashboardNavigation({permissions}) {
 
                 <Grid item xs={6} align="right">
                     <Button variant='text' disableElevation type="submit" endIcon={<FiUser size='1em' />} onClick={handleAccountMenuClick}>
-                        Account
+                        <div>
+                        <Typography variant='body2' gutterBottom={false} align='right'>
+                            <b>{titleize(props.userData.firstName)} {titleize(props.userData.lastName)}</b>
+                        </Typography>
+                        <div style={{marginTop: '-0.3em'}} align='right'>
+                            {titleize(props.userData.role)}
+                        </div>
+                        </div>
                     </Button>
 
                     <Menu
@@ -139,8 +159,8 @@ export default function DashboardNavigation({permissions}) {
                             }
                         />
                         <PermissionControl
-                            featureEnabled={permissions.applications.enabled}
-                            userPermissions={permissions.applications.permission}
+                            featureEnabled={props.userData.permissions.applications.enabled}
+                            userPermissions={props.userData.permissions.applications.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -152,8 +172,8 @@ export default function DashboardNavigation({permissions}) {
                                 />}
                         />
                         <PermissionControl
-                            featureEnabled={permissions.checkin.enabled}
-                            userPermissions={permissions.checkin.permission}
+                            featureEnabled={props.userData.permissions.checkin.enabled}
+                            userPermissions={props.userData.permissions.checkin.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -166,8 +186,8 @@ export default function DashboardNavigation({permissions}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissions.schedule.enabled}
-                            userPermissions={permissions.schedule.permission}
+                            featureEnabled={props.userData.permissions.schedule.enabled}
+                            userPermissions={props.userData.permissions.schedule.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -180,8 +200,8 @@ export default function DashboardNavigation({permissions}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissions.hardware.enabled}
-                            userPermissions={permissions.hardware.permission}
+                            featureEnabled={props.userData.permissions.hardware.enabled}
+                            userPermissions={props.userData.permissions.hardware.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -194,8 +214,8 @@ export default function DashboardNavigation({permissions}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissions.projects.enabled}
-                            userPermissions={permissions.projects.permission}
+                            featureEnabled={props.userData.permissions.projects.enabled}
+                            userPermissions={props.userData.permissions.projects.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -208,8 +228,8 @@ export default function DashboardNavigation({permissions}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissions.prizes.enabled}
-                            userPermissions={permissions.prizes.permission}
+                            featureEnabled={props.userData.permissions.prizes.enabled}
+                            userPermissions={props.userData.permissions.prizes.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -222,8 +242,8 @@ export default function DashboardNavigation({permissions}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissions.judging.enabled}
-                            userPermissions={permissions.judging.permission}
+                            featureEnabled={props.userData.permissions.judging.enabled}
+                            userPermissions={props.userData.permissions.judging.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={
@@ -236,8 +256,8 @@ export default function DashboardNavigation({permissions}) {
                         />
 
                         <PermissionControl
-                            featureEnabled={permissions.admin.enabled}
-                            userPermissions={permissions.admin.permission}
+                            featureEnabled={props.userData.permissions.admin.enabled}
+                            userPermissions={props.userData.permissions.admin.permission}
                             requiredPermissions={['view']}
                             verbose={false}
                             component={

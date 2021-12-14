@@ -1,12 +1,46 @@
 import React from 'react';
-import {Typography} from "@mui/material";
+import {Card, CardContent, Grid, Typography} from "@mui/material";
+import EventLocationCard from "./InfoCards/EventLocationCard";
+import EventRelocationAssistanceCard from "./InfoCards/EventRelocationAssistanceCard";
 
-export default function ParticipantHome() {
-    return(
+export default function ParticipantHome(props) {
+
+    return (
         <>
-            <Typography variant='h4' component='div' className='mb-4'>
-                Participant Home
-            </Typography>
+            <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                spacing={3}
+            >
+                <Grid item xs={12} className='mb-4'>
+                    <Card>
+                        <CardContent align='center'>
+                            {/*TODO: Place event countdown timer here... */}
+                            <Typography variant='h3'>
+                                Hacking Begins in TIME HERE
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+
+                <Grid item xs={12} lg={6} xl={4}>
+                    <EventLocationCard {...props} />
+                </Grid>
+
+                <Grid item xs={12} lg={6} xl={4}>
+                    <EventRelocationAssistanceCard {...props} />
+                </Grid>
+
+            </Grid>
+
+            {/*Padding for footer*/}
+            <span style={{height: '5vh'}}>
+                &nbsp;
+            </span>
+
+
         </>
 
     )

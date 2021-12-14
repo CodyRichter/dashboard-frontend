@@ -1,5 +1,7 @@
 import React from 'react';
 import {Button, Card, CardContent, Grid, Typography} from "@mui/material";
+import {Link} from "react-router-dom";
+import titleize from "titleize";
 
 export default function NewUser(props) {
     return (
@@ -17,7 +19,7 @@ export default function NewUser(props) {
 
                                     {/*If applications are enabled, show this view*/}
                                     <Typography variant='paragraph' component='div' className='mb-3'>
-                                        Hello {props.userData.firstName},
+                                        Hello {titleize(props.userData.firstName)},
                                     </Typography>
 
                                         <Typography variant='paragraph' component='div' className='mb-4'>
@@ -26,7 +28,7 @@ export default function NewUser(props) {
                                         </Typography>
 
 
-                                    <Button size='large' disableElevation variant='contained' color='primary'>
+                                    <Button component={Link} to='/applications' size='large' disableElevation variant='contained' color='primary'>
                                         Apply Now
                                     </Button>
                                     </CardContent>
@@ -42,7 +44,7 @@ export default function NewUser(props) {
 
                                         <Typography variant='paragraph' component='div' className='mb-4'>
                                             Thank you for completing the first step to participate in [HACKATHON_NAME] [HACKATHON_VERSION].
-                                            Sadly though, our applications are closed. We hope to see you at our next event!
+                                            Sadly our applications are closed. We hope to see you at our next event!
                                         </Typography>
 
                                     </CardContent>
